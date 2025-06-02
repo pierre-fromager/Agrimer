@@ -11,7 +11,7 @@ FranceAgrimer is the data provider but it publishes quotations as html format on
 ```bash
 git clone https://github.com/pierre-fromager/Agrimer.git
 cd Agrimer
-compoiser install
+composer install
 ```
 
 ## Example
