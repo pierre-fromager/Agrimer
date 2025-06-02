@@ -1,0 +1,73 @@
+{
+    "name": "pier-infor/agrimer",
+    "description": "France Agrimer Markets Cotations",
+    "type": "library",
+    "license": "GPL-3.0-or-later",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "PierInfor\\Agrimer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "disable-tls": false,
+        "secure-http": true,
+        "process-timeout": 0
+    },
+    "authors": [
+        {
+            "name": "Pierre Fromager",
+            "email": "pf@pier-infor.fr"
+        }
+    ],
+    "require": {
+        "php": ">=7.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "squizlabs/php_codesniffer": "*",
+        "friendsofphp/php-cs-fixer": "^2.17",
+        "phploc/phploc": "^5.0",
+        "phpmd/phpmd": "@stable",
+        "theseer/phpdox": "@stable",
+        "pier-infor/undercover": "^1.0.1",
+        "phpstan/phpstan": "^1.6"
+    },
+    "scripts": {
+        "serve": [
+            "php -S localhost:8888 src/index.php"
+        ],
+        "up": [
+            "composer update --with-all-dependencies"
+        ],
+        "start": [
+            "php src/index.php"
+        ],
+        "lint": [
+            "php ./vendor/bin/phpcbf --standard=PSR12 --warning-severity=10 --extensions=php src/* tests/*"
+        ],
+        "test": [
+            "phpdbg -qrr ./vendor/bin/phpunit",
+            "php ./vendor/bin/undercover -f build/logs/coverage.clover -l95 -m95 -s95 -c95 -b true"
+        ],
+        "cq": [
+            "php ./vendor/bin/phploc --ansi src/* --log-xml ./build/logs/phploc.xml"
+        ],
+        "doc": [
+            "composer cq",
+            "php ./vendor/bin/phpdox"
+        ],
+        "phpstan": [
+            "php ./vendor/bin/phpstan analyse -c phpstan.neon"
+        ],
+        "genautoload":[
+            "composer dump-autoload -o"
+        ]
+    }
+}
