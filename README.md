@@ -14,6 +14,12 @@ cd Agrimer
 composer install
 ```
 
+Or you can also insall it from packagist
+
+```bash
+composer require pier-infor/agrimer
+```
+
 ## Example
 
 You can run a simple use case to start to use this lib running :
