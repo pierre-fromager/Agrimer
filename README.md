@@ -14,7 +14,7 @@ cd Agrimer
 composer install
 ```
 
-Or you can also insall it from packagist
+Or you can also install it from packagist
 
 ```bash
 composer require pier-infor/agrimer
