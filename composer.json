@@ -1,9 +1,8 @@
 {
     "name": "pier-infor/agrimer",
-    "description": "France Agrimer Markets Cotations",
+    "description": "France Agrimer Markets Quotations",
     "type": "library",
     "license": "GPL-3.0-or-later",
-    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "PierInfor\\Agrimer\\": "src/"
