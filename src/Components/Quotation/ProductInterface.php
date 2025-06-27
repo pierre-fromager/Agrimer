@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PierInfor\Agrimer\Components\Quotation;
 
+use PierInfor\Agrimer\Components\Quotation\CommonInterface;
+
 /**
- * Item interface
+ * Product interface
  */
-interface ItemInterface
+interface ProductInterface extends CommonInterface
 {
     const _LF = "\n";
     const _CR = "\r";
@@ -21,13 +23,14 @@ interface ItemInterface
     const _IX_VARIA = 2;
     const _IX_MIN = 3;
     const _IX_MAX = 4;
+    const _MAX_IX = 4;
 
     /**
      * set market id
      * @param string $mid maeket id
-     * @return ItemInterface
+     * @return ProductInterface
      */
-    public function setMarketId(string $mid): ItemInterface;
+    public function setMarketId(string $mid): ProductInterface;
 
     /**
      * get market id
@@ -38,9 +41,9 @@ interface ItemInterface
     /**
      * set item id
      * @param string $id item id
-     * @return ItemInterface
+     * @return ProductInterface
      */
-    public function setId(string $id): ItemInterface;
+    public function setId(string $id): ProductInterface;
 
     /**
      * get item id
@@ -51,9 +54,9 @@ interface ItemInterface
     /**
      * set item label
      * @param string $label
-     * @return ItemInterface
+     * @return ProductInterface
      */
-    public function setLabel(string $label): ItemInterface;
+    public function setLabel(string $label): ProductInterface;
 
     /**
      * get item label
@@ -64,9 +67,9 @@ interface ItemInterface
     /**
      * set item value
      * @param string $value
-     * @return ItemInterface
+     * @return CommonInterface
      */
-    public function setValue(string $value): ItemInterface;
+    public function setValue(string $value): CommonInterface;
 
     /**
      * get item value
@@ -77,9 +80,9 @@ interface ItemInterface
     /**
      * set item min value
      * @param string $min
-     * @return ItemInterface
+     * @return CommonInterface
      */
-    public function setMin(string $min): ItemInterface;
+    public function setMin(string $min): CommonInterface;
 
     /**
      * get item min value
@@ -90,9 +93,9 @@ interface ItemInterface
     /**
      * set item max value
      * @param string $max
-     * @return ItemInterface
+     * @return CommonInterface
      */
-    public function setMax(string $max): ItemInterface;
+    public function setMax(string $max): CommonInterface;
 
     /**
      * get item max value
@@ -103,9 +106,9 @@ interface ItemInterface
     /**
      * set item value variation
      * @param string $varia
-     * @return ItemInterface
+     * @return ProductInterface
      */
-    public function setVaria(string $varia): ItemInterface;
+    public function setVaria(string $varia): ProductInterface;
 
     /**
      * get item value variation

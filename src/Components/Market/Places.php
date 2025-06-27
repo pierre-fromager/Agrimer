@@ -59,7 +59,7 @@ class Places extends Constants
      */
     protected function add($id, $label): Places
     {
-        $this->stack[] = new MarketPlace($id, $label);
+        $this->stack[] = (new MarketPlace())->setId($id)->setLabel($label);
         return $this;
     }
 
@@ -79,7 +79,7 @@ class Places extends Constants
     public function listIds(): array
     {
         return array_map(function ($place) {
-            return $place->id;
+            return $place->getId();
         }, $this->list());
     }
 }

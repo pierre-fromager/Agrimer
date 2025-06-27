@@ -98,7 +98,7 @@ class PlacesTest extends PFT
             self::getMethod('add')->invokeArgs($this->instance, [Constants::M0201_ID,Constants::M0201_LABEL]),
             $this->instance
         );
-        $this->assertEquals(count($this->instance->list()),self::EXPECTED_MARKET_COUNT + 1);
+        $this->assertEquals(count($this->instance->list()), self::EXPECTED_MARKET_COUNT + 1);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PierInfor\Agrimer\Components\Quotation\Parser;
 
+use PierInfor\Agrimer\Components\Http\FetchInterface;
 use PierInfor\Agrimer\Components\Quotation\Parser\ParamsInterface;
 
 /**
@@ -12,54 +13,22 @@ use PierInfor\Agrimer\Components\Quotation\Parser\ParamsInterface;
 class Params implements ParamsInterface
 {
     /** @var string */
-    protected $proto;
-    /** @var string */
-    protected $host;
-    /** @var string */
-    protected $uri;
+    protected $url;
     /** @var string */
     protected $query;
     /** @var string */
     protected $marketId;
+    /** @var string */
+    protected $method;
+    /** @var array */
+    protected $vars;
 
     /**
      * ctor
      */
     public function __construct()
     {
-    }
-
-    /**
-     * set protocol
-     * @param string $proto
-     * @return ParamsInterface
-     */
-    public function setProto(string $proto): ParamsInterface
-    {
-        $this->proto = $proto;
-        return $this;
-    }
-
-    /**
-     * set host
-     * @param string $host
-     * @return ParamsInterface
-     */
-    public function setHost(string $host): ParamsInterface
-    {
-        $this->host = $host;
-        return $this;
-    }
-
-    /**
-     * set uri
-     * @param string $uri
-     * @return ParamsInterface
-     */
-    public function setUri(string $uri): ParamsInterface
-    {
-        $this->uri = $uri;
-        return $this;
+        $this->setMethod(FetchInterface::_GET_METHOD)->setVars([]);
     }
 
     /**
@@ -108,6 +77,57 @@ class Params implements ParamsInterface
      */
     public function getUrl(): string
     {
-        return $this->proto . $this->host . $this->uri;
+        return $this->url;
+    }
+
+    /**
+     * set final url endpoint
+     * @param string $url
+     * @return ParamsInterface
+     */
+    public function setUrl(string $url): ParamsInterface
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * get request method
+     * @param string $method
+     * @return ParamsInterface
+     */
+    public function setMethod(string $method): ParamsInterface
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
+     * get request method
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * get request vaviables
+     * @return array
+     */
+    public function getVars(): array
+    {
+        return $this->vars;
+    }
+
+    /**
+     * set request vaviables
+     * @param array $vars
+     * @return ParamsInterface
+     */
+    public function setVars(array $vars): ParamsInterface
+    {
+        $this->vars = $vars;
+        return $this;
     }
 }

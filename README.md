@@ -6,6 +6,33 @@ Agrimer is a php lib to grab food market's quotations for both french and german
 
 FranceAgrimer is the data provider but it publishes quotations as html format only, no api available to deal with raw datas.
 
+## History
+
+### FAO price index
+
+Over last 35 years
+
+![fao price index evolution](./fixtures/doc/fao.price.evol.jpeg)
+
+### USA gasoline price
+
+Over last 35 years
+
+![usa gaoline price](./fixtures/doc/us.gasoline.evol.jpg)
+
+### Climate temperature changes
+
+Over last 140 years
+
+![climate temperature change](./fixtures/doc/climate.global.temp.jpg)
+
+### Relevance
+
+* Food market's quotations are relevant indices to reveal global economic health.
+* Feed 8 billion people is the challenge.
+* Production tool cost is strongly corelated to fossil energy price because of large culture scale strategy.
+* Efforts due to climate change require more energy according various factors (soil health input ,plow ,cryptogamous disease treatments ,loss of bacteria from the biotope).
+
 ## Setup
 
 ```bash

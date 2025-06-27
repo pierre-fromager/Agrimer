@@ -29,13 +29,22 @@ class ParamsTest extends PFT
         if (!self::TEST_ENABLE) {
             $this->markTestSkipped('Test disabled.');
         }
-         $this->instance = (new ParserParams())
-            ->setProto('https://')
-            ->setHost('rnm.franceagrimer.fr')
-            ->setUri('/prix?' . MarketPlaces::M0201_ID . ':MARCHE')
+         $this->instance = $this->getTestParams();
+    }
+
+    /**
+     * get test params
+     * @return ParserParams
+     */
+    protected function getTestParams(): ParserParams
+    {
+        $url = 'https://rnm.franceagrimer.fr/prix?' . MarketPlaces::M0201_ID . ':MARCHE';
+        return (new ParserParams())
+            ->setUrl($url)
             ->setMarketId(MarketPlaces::M0201_ID)
             ->setQuery('//table[@id=\'tabcotmar\']/tbody/tr/td');
     }
+
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -71,33 +80,6 @@ class ParamsTest extends PFT
     }
 
     /**
-     * testProto
-     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::setProto
-     */
-    public function testProto(): void
-    {
-        $this->assertTrue($this->instance->setProto('https') instanceof ParserParams);
-    }
-
-    /**
-     * testHost
-     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::setHost
-     */
-    public function testHost(): void
-    {
-        $this->assertTrue($this->instance->setHost('host.tld') instanceof ParserParams);
-    }
-
-    /**
-     * testUri
-     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::setUri
-     */
-    public function testUri(): void
-    {
-        $this->assertTrue($this->instance->setUri('uritest') instanceof ParserParams);
-    }
-
-    /**
      * test market id
      * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::setMarketId
      * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::getMarketId
@@ -123,11 +105,41 @@ class ParamsTest extends PFT
 
     /**
      * test url
+     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::setUrl
      * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::getUrl
      */
-    public function testGetUrl(): void
+    public function testUrl(): void
     {
         $this->assertTrue(is_string($this->instance->getUrl()));
         $this->assertNotEmpty($this->instance->getUrl());
+        $this->assertTrue($this->instance->setUrl('') instanceof ParserParams);
+        $this->assertEmpty($this->instance->getUrl());
+    }
+
+    /**
+     * test method
+     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::getMethod
+     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::setMethod
+     */
+    public function testMethod(): void
+    {
+        $this->assertTrue(is_string($this->instance->getMethod()));
+        $this->assertNotEmpty($this->instance->getMethod());
+        $this->assertEquals($this->instance->getMethod(), 'GET');
+    }
+
+
+    /**
+     * test vars
+     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::getVars
+     * @covers PierInfor\Agrimer\Components\Quotation\Parser\Params::setVars
+     */
+    public function testVars(): void
+    {
+        $expected = ['test' => 'test'];
+        $this->assertTrue(is_array($this->instance->getVars()));
+        $this->assertEmpty($this->instance->getVars());
+        $this->assertTrue($this->instance->setVars($expected) instanceof ParserParams);
+        $this->assertEquals($this->instance->getVars(), $expected);
     }
 }

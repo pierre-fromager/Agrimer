@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace PierInfor\Agrimer\Components\Serializer;
 
+/**
+ *  Serializer trait
+ */
 trait JsonSerializer
 {
-    public function jsonSerialize()
+    /**
+     * return object props values as array 
+     * @return array
+     */
+    public function jsonSerialize():array
     {
         return get_object_vars($this);
     }

@@ -2,12 +2,11 @@
 
 namespace Tests\Components\Quotation;
 
-use DOMNode;
 use PHPUnit\Framework\TestCase as PFT;
+use PierInfor\Agrimer\Components\Http\Fetch;
 use PierInfor\Agrimer\Components\Quotation\Loader;
 use PierInfor\Agrimer\Components\Market\Places as MarketPlaces;
 use PierInfor\Agrimer\Components\Quotation\Parser\Params as ParserParams;
-use PierInfor\Agrimer\Components\Quotation\Item;
 
 /**
  * @covers \PierInfor\Agrimer\Components\Quotation\Loader::<public>
@@ -33,13 +32,20 @@ class LoaderTest extends PFT
         if (!self::TEST_ENABLE) {
             $this->markTestSkipped('Test disabled.');
         }
-        $params =  (new ParserParams())
-            ->setProto('https://')
-            ->setHost('rnm.franceagrimer.fr')
-            ->setUri('/prix?' . MarketPlaces::M0201_ID . ':MARCHE')
+        $this->instance = new Loader($this->getTestParams());
+    }
+
+    /**
+     * get test params
+     * @return ParserParams
+     */
+    protected function getTestParams(): ParserParams
+    {
+        $url = 'https://rnm.franceagrimer.fr/prix?' . MarketPlaces::M0201_ID . ':MARCHE';
+        return (new ParserParams())
+            ->setUrl($url)
             ->setMarketId(MarketPlaces::M0201_ID)
             ->setQuery('//table[@id=\'tabcotmar\']/tbody/tr/td');
-        $this->instance = new Loader($params);
     }
 
     /**
@@ -84,6 +90,23 @@ class LoaderTest extends PFT
     }
 
     /**
+     * testLoadError
+     * @covers PierInfor\Agrimer\Components\Quotation\Loader::load
+     * @covers PierInfor\Agrimer\Components\Quotation\Loader::setParams
+     * @covers PierInfor\Agrimer\Components\Quotation\Loader::getParams
+     * @covers PierInfor\Agrimer\Components\Quotation\Loader::error
+     * @covers PierInfor\Agrimer\Components\Quotation\Loader::errorMsg
+     */
+    public function testLoadError(): void
+    {
+        $params = $this->instance->getParams()->setUrl('');
+        $this->instance->setParams($params);
+        $this->assertTrue($this->instance->load() instanceof Loader);
+        $this->assertTrue($this->instance->error());
+        $this->assertEquals($this->instance->errorMsg(), Fetch::_ERROR_REQ_MSG);
+    }
+
+    /**
      * testGetDom
      * @covers PierInfor\Agrimer\Components\Quotation\Loader::load
      * @covers PierInfor\Agrimer\Components\Quotation\Loader::getDom
@@ -104,15 +127,5 @@ class LoaderTest extends PFT
             self::getMethod('initLoader')->invokeArgs($this->instance, []),
             $this->instance
         );
-    }
-
-    /**
-     * testGetUrl
-     * @covers PierInfor\Agrimer\Components\Quotation\Loader::getUrl
-     */
-    public function testGetUrl(): void
-    {
-        $url = self::getMethod('getUrl')->invokeArgs($this->instance, []);
-        $this->assertNotEmpty($url);
     }
 }

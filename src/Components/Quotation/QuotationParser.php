@@ -5,26 +5,31 @@ declare(strict_types=1);
 namespace PierInfor\Agrimer\Components\Quotation;
 
 use PierInfor\Agrimer\Components\Quotation\Loader;
-use PierInfor\Agrimer\Components\Quotation\Item;
+use PierInfor\Agrimer\Components\Quotation\Product;
 use PierInfor\Agrimer\Components\Quotation\Parser\ParamsInterface;
 
 /**
  * Market quotation parser
  */
-class Parser extends Loader
+class QuotationParser extends Loader
 {
     /** @var string */
     protected $marketId;
+
     /** @var \DOMXPath */
     protected $xpath;
+
     /** @var ParamsInterface */
     protected $params;
+
     /** @var array */
     protected $collection;
-    /** @var Item */
-    protected $item;
+
+    /** @var Product */
+    protected $product;
+
     /** @var int */
-    protected $iix;
+    protected $ixpr;
 
     /**
      * ctor
@@ -34,17 +39,18 @@ class Parser extends Loader
     {
         $this->params = $params;
         $this->collection = [];
+        $this->ixpr = 0;
     }
 
     /**
      * parser initializer
-     * @return Parser
+     * @return QuotationParser
      */
-    protected function initParser(): Parser
+    protected function initParser(): QuotationParser
     {
         $this->load();
         $this->xpath =  new \DOMXPath($this->getDom());
-        $this->item = new Item();
+        $this->product = new Product();
         $this->collection = [];
         return $this;
     }
@@ -59,39 +65,21 @@ class Parser extends Loader
     }
 
     /**
-     * process item
+     * process product
      * @param \DOMNode $node
-     * @param int $ix
-     * @return Parser
+     * @return QuotationParser
      */
-    protected function processItem(\DOMNode $node): Parser
+    protected function processProduct(\DOMNode $node): QuotationParser
     {
-        if ($this->iix == 0) {
-            $this->item = new Item();
+        if ($this->ixpr == 0) {
+            $this->product = new Product();
         }
-        $ct = $node->textContent;
-        switch ($this->iix) {
-            case ItemInterface::_IX_LABEL:
-                $this->item->setLabel($ct);
-                break;
-            case ItemInterface::_IX_VALUE:
-                $this->item->setValue($ct);
-                break;
-            case ItemInterface::_IX_VARIA:
-                $this->item->setVaria($ct);
-                break;
-            case ItemInterface::_IX_MIN:
-                $this->item->setMin($ct);
-                break;
-            case ItemInterface::_IX_MAX:
-                $this->item->setMax($ct);
-                break;
-        }
-        $this->iix++;
-        if ($this->iix > 4) {
-            $this->item->setMarketId($this->params->getMarketId());
-            $this->collection[] = $this->item;
-            $this->iix = 0;
+        $this->product->domHydrate($node, $this->ixpr);
+        $this->ixpr++;
+        if ($this->ixpr > ProductInterface::_MAX_IX) {
+            $this->product->setMarketId($this->params->getMarketId());
+            $this->collection[] = $this->product;
+            $this->ixpr = 0;
         }
         return $this;
     }
@@ -100,13 +88,13 @@ class Parser extends Loader
      * parse quotations to form collection
      * @return Parser
      */
-    public function parse(): Parser
+    public function parse(): QuotationParser
     {
         $this->initParser();
         $nodes = $this->xpath->query($this->params->getQuery());
-        $this->iix = 0;
+        $this->ixpr = 0;
         foreach ($nodes as $node) {
-            $this->processItem($node);
+            $this->processProduct($node);
         }
         return $this;
     }
